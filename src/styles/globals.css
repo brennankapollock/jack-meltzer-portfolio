@@ -2,26 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
+/*
+  Based on TailwindCSS recommendations,
+  consider using classes instead of the `@apply` directive
+  @see https://tailwindcss.com/docs/reusing-styles#avoiding-premature-abstraction
+*/
+/* $color-text: #e1eef6;
+$color-link: #ff5f2e;
+$color-link-hover: #fcbe32;
+$black: #111111;
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply bg-[$black];
+  font-family: sans-serif;
 }
+a {
+  @apply text-[$color-link] hover:text-[$color-link-hover];
+}
+button {
+  @apply fixed font-bold text-base p-5 right-5 bottom-5;
+}
+h1 {
+  @apply text-center;
+}
+.screen {
+  @apply bg-[$color-text] fixed w-screen h-screen -translate-x-2/4 -translate-y-2/4 content-["_"] overflow-hidden bg-cover bg-[url(https://cldup.com/gn3s3Fg75t.gif)] text-[$color-text] left-2/4 top-2/4; // Fallback for old browsers
+  background: #16222a;
+  background: -webkit-linear-gradient(to left, #16222a, #3a6073);
+  background: linear-gradient(to left, #16222a, #3a6073);
+} */
