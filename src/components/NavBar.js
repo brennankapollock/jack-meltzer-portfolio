@@ -8,8 +8,6 @@ import Link from "next/link";
 // a year ago by james arthur
 // https://www.youtube.com/watch?v=c3Y98Iit9QY
 
-// under directing add personal stuff
-
 // god bombs documentary (director and cinematographer)
 // https://www.youtube.com/watch?v=GJZz2TSBS7Y
 
