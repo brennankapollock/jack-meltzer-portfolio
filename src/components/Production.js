@@ -1,5 +1,5 @@
-import React from "react";
-import Slider from "react-slick";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Production() {
   const videos = [
@@ -9,34 +9,54 @@ export default function Production() {
     // Add more video URLs as needed
   ];
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
+  const apiKey = "AIzaSyD7J-BO8vYEKC6Ay-L1wFWdjqJeN80er_M";
+
+  const [videoDetails, setVideoDetails] = useState([]);
+
+  useEffect(() => {
+    const fetchVideoDetails = async () => {
+      const requests = videos.map((videoUrl) => {
+        const videoId = new URLSearchParams(new URL(videoUrl).search).get("v");
+        return axios.get("https://www.googleapis.com/youtube/v3/videos", {
+          params: {
+            part: "snippet,contentDetails,statistics",
+            id: videoId,
+            key: apiKey,
+          },
+        });
+      });
+
+      try {
+        const responses = await axios.all(requests);
+        const details = responses.map(
+          (response) => response.data.items[0].snippet
+        );
+        setVideoDetails(details);
+      } catch (error) {
+        console.error("Error making API requests:", error);
+      }
+    };
+
+    fetchVideoDetails();
+  }, []);
 
   return (
-    <div>
-      <div className="bg-black h-screen flex justify-center items-center">
-        <div className="text-2xl flex flex-col items-center gap-12">
-          <Slider {...settings} className="production-carousel">
-            {videos.map((video, index) => (
-              <div key={index}>
-                <iframe
-                  width="560"
-                  height="315"
-                  src={video.replace("watch?v=", "embed/")}
-                  title={`Video ${index + 1}`}
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-            ))}
-          </Slider>
+    <div className="h-screen grid md:grid-cols-2 lg:grid-cols-3 grid-rows-2 bg-black">
+      {videoDetails.map((video, index) => (
+        <div key={index} className="relative overflow-hidden">
+          <img
+            src={video.thumbnails.standard.url}
+            alt={video.title}
+            className="object-cover w-full h-full"
+          />
+          <a
+            href={videos[index]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute inset-0 flex items-center justify-center text-white"
+          />
         </div>
-      </div>
+      ))}
     </div>
   );
 }
